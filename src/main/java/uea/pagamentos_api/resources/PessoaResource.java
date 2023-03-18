@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import uea.pagamentos_api.ResumoPessoaDto;
 import uea.pagamentos_api.models.Endereco;
 import uea.pagamentos_api.models.Pessoa;
+import uea.pagamentos_api.repositories.filters.PessoaFilter;
 import uea.pagamentos_api.services.PessoaService;
 
 @RestController
@@ -43,7 +45,13 @@ public class PessoaResource {
 		List<Pessoa> pessoas = pessoaService.listar();
 		return ResponseEntity.ok().body(pessoas);
 	}
-
+	
+	@GetMapping
+	public ResponseEntity<List<ResumoPessoaDto>> resumir(PessoaFilter pessoaFilter) {
+		List<ResumoPessoaDto> resumos = pessoaService.resumir(pessoaFilter);
+		return ResponseEntity.ok().body(resumos);
+	}
+	
 	@GetMapping(value = "/{codigo}")
 	public ResponseEntity<Pessoa> buscarPorCodigo(@PathVariable Long codigo) {
 		Pessoa pessoa = pessoaService.buscarPorCodigo(codigo);
